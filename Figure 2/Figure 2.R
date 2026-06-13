@@ -1,5 +1,5 @@
 # 坚果促生项目数据分析及可视化脚本
-# 本实验涉及到的代谢组和转录组数据由百迈客公司进行测试# Figure 2A-E由直接在百迈客云（BMKCloud）进行绘制（https://www.biocloud.net/）
+# 本实验涉及到的代谢组和转录组数据由百迈客公司进行测试# Figure 2A-E直接在百迈客云（BMKCloud）进行绘制（https://www.biocloud.net/）
 
 # 设置路径
 setwd("E:/macadamia/promotion/Figure 2")
