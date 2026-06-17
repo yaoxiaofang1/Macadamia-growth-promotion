@@ -199,7 +199,7 @@ for(f in files){
       p = tryCatch(wilcox.test(Abundance ~ Group, exact=FALSE)$p.value, error=function(e) 1),
       .groups="drop"
     ) %>%
-    mutate(star = case_when(p < 0.001 ~ "***", p < 0.01 ~ "**", p < 0.05 ~ "*", TRUE ~ ""))
+    mutate(p_adj = p.adjust(p, method = "BH"), star = case_when(p < 0.001 ~ "***", p < 0.01 ~ "**", p < 0.05 ~ "*", TRUE ~ ""))
   
   sig_mb <- stat_mb %>% filter(p < 0.05) %>% arrange(desc(mean_SynCom - mean_Control)) %>% slice_head(n=20)
   
