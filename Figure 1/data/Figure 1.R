@@ -75,14 +75,25 @@ star_df_ag <- df_ag_long %>%
             y = max(Value) * 1.05, .groups="drop") %>%
   mutate(star = case_when(p < 0.001 ~ "***", p < 0.01 ~ "**", p < 0.05 ~ "*", TRUE ~ ""))
 
-# 字母标记(ANOVA)
-get_letters <- function(data, is_upper=FALSE) {
-  data %>% group_by(Type) %>% do({
-    lsd <- LSD.test(aov(Value ~ Day, data=.), "Day", console=F)
-    res <- data.frame(Day = rownames(lsd$groups), let = lsd$groups$groups)
-    if(is_upper) res$let <- toupper(res$let)
-    res
-  })
+# 字母标记(ANOVA, Tukey HSD)
+get_letters <- function(data, is_upper = FALSE) {
+  data %>%
+    group_by(Type) %>%
+    do({
+      fit <- aov(Value ~ Day, data = .)
+      tuk <- TukeyHSD(fit)
+      
+      # 生成显著性字母
+      letters <- multcompLetters4(fit, tuk)
+      
+      res <- data.frame(
+        Day = names(letters$Day$Letters),
+        let = letters$Day$Letters
+      )
+      
+      if (is_upper) res$let <- toupper(res$let)
+      res
+    })
 }
 
 sum_df_ag <- df_ag_long %>%
